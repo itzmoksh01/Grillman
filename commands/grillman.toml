@@ -1,0 +1,9 @@
+description = "Grillman solves any project brief or technical assignment end to end"
+prompt = """
+Use the grillman skill (or the Grillman master prompt) on the brief below and on every attached file.
+Run the full pipeline autonomously: store the brief verbatim, build SPEC and GRAPH, build with evidence, run the Ultra Review until every lens scores 9 or more, then ship the deliverables and the Final Report.
+Ask at most one batch of 3 blocking questions, only if truly blocked. Keep token use minimal.
+
+BRIEF / ARGUMENTS:
+{{args}}
+"""

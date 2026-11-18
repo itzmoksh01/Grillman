@@ -1,0 +1,8 @@
+{
+  "name": "grillman",
+  "description": "Grill the brief, build the proof, ship the 10/10. Universal assignment and project solver with spec, graph, loop, review and delivery gates.",
+  "version": "1.0.0",
+  "author": { "name": "Abhishek Goswami", "url": "https://github.com/itzmoksh01" },
+  "license": "MIT",
+  "keywords": ["assignment", "take-home", "agent-skill", "workflow", "review"]
+}
