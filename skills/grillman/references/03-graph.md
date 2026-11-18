@@ -16,5 +16,7 @@ GRAPH.md is a real file the agent edits, not a mental picture. Columns:
 5. **Parallelism.** Nodes with no shared deps can run in parallel subagents if available.
 6. **Cut line.** Decide up front which nodes are polish. If time or tokens run short, cut polish, never a requirement. A cut requirement must move to `[X#]` with a reason and be stated in the README.
 
+A small worked example (spec, graph, context, review that pass `check`) is in `examples/toy/` next to this skill. Read it only if the format is unclear.
+
 ## Typical node families
 setup and environment, data acquisition and inspection, baseline, main method, evaluation harness, error analysis, user interface or API, packaging (Docker, requirements), docs and samples, review fixes.

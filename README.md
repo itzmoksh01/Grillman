@@ -4,7 +4,7 @@
 
 **Grill the brief. Build the proof. Ship the 10/10.**
 
-One slash command turns any project brief or technical assignment into a spec-traced, evidence-backed, self-reviewed submission, in any AI coding agent or chat platform, with minimum tokens.
+One slash command turns any project brief or technical assignment into a spec-traced, evidence-backed, self-reviewed submission. Works in any agent that reads markdown instructions (Claude Code, Codex, Cursor, Gemini CLI and similar) and, as a single pasted prompt, in any chat AI. Built to spend as few tokens as possible.
 
 `/grillman` + your brief (and attached files) = a finished, reviewed deliverable pack.
 
@@ -51,12 +51,14 @@ flowchart LR
 **Any agent, one script** (copies the skill and the `/grillman` command):
 
 ```bash
-git clone https://github.com/itzmoksh01/grillman && cd grillman
+git clone https://github.com/itzmoksh01/Grillman && cd Grillman
 ./install.sh claude            # or: codex | cursor | gemini | agents | all
 ./install.sh claude --project  # install into the current project instead of ~
 ```
 
-**Skills CLI** (once published): `npx skills add itzmoksh01/grillman`
+**Windows (PowerShell):** `.\install.ps1 -Target claude` (not yet tested on Windows, please report issues). Git Bash or WSL can use `install.sh`. On Windows the skill calls `py` instead of `python3`.
+
+**Skills CLI:** `npx skills add itzmoksh01/Grillman` should work for agents supported by that CLI (not verified by this repo).
 
 **Claude Code plugin layout** is included (`.claude-plugin/plugin.json`, `skills/`, `commands/`).
 
@@ -72,6 +74,7 @@ Tool folder conventions differ between versions. If a path is wrong for your too
 
 or attach the brief (PDF, doc, images, sample data) and run `/grillman` with nothing else. Grillman then works on its own:
 
+0. If `.grillman/` already exists it resumes from `CONTEXT.md` and `grillman.py next` instead of starting over.
 1. Stores the brief verbatim and opens every attachment.
 2. Builds `SPEC.md`, researches only what is uncertain, builds `GRAPH.md`.
 3. Builds and verifies node by node, with evidence.
@@ -89,35 +92,45 @@ See [`examples/newspaper-ad-detection/`](examples/newspaper-ad-detection/) for a
 ## What is inside
 
 ```
-grillman/
+Grillman/
 ├── skills/grillman/
-│   ├── SKILL.md                 the protocol (8 Laws, pipeline, modes)
+│   ├── SKILL.md                 the protocol (8 Laws, pipeline, safety rails, modes)
 │   ├── references/              loaded on demand (intake, research, graph, loop,
 │   │                            review, delivery, domain playbooks, anti-generic)
 │   ├── templates/               BRIEF, SPEC, GRAPH, CONTEXT, REVIEW
-│   └── scripts/grillman.py      init | check | status (stdlib only)
+│   ├── examples/toy/            small worked example that passes the gate
+│   └── scripts/grillman.py      init | check | next | status (stdlib only)
 ├── commands/                    /grillman for Claude Code, Codex, Cursor, Gemini
 ├── GRILLMAN_MASTER_PROMPT.md    self-contained prompt for any AI platform
 ├── scripts/make_prompt.sh       brief -> ready-to-paste prompt
-├── examples/                    real brief + generated prompt
-├── AGENTS.md  install.sh  .claude-plugin/plugin.json  LICENSE
+├── examples/                    real brief + leads + generated prompt
+├── tests/  evals/  docs/        17 unit tests, behavioural eval prompts, review report, CI template
+├── install.sh  install.ps1  AGENTS.md  .claude-plugin/plugin.json  LICENSE
 ```
 
 ## The checker
 
-`python skills/grillman/scripts/grillman.py check` fails unless: every R/D/E/N id is covered by a DONE node with evidence, no node is open, the DAG has no cycles and no unknown dependencies, and the review has every lens at 9 or more. It is deliberately dumb and deterministic: a script that checks is cheaper and harder to fool than prose that explains.
+`python3 skills/grillman/scripts/grillman.py check` fails unless: every R/D/E/N id is covered by a DONE node with evidence, every file path named in Evidence exists, no node is DONE before its dependencies, no node is left open, the DAG has no cycles, and every review lens scores 9 or more. `next` lists the nodes ready to build, so a new session resumes without re-reading everything. It is deliberately dumb and deterministic: a script that checks is cheaper and harder to fool than prose that explains.
 
 ## Token efficiency
 
-Progressive disclosure (metadata, then SKILL.md, then one reference at a time), file-based memory, one-line status updates, no echoing of written files, grep/range reads, a script for the gates, a 25-line final report.
+Measured sizes (`wc -w`): SKILL.md about 1,200 words, each reference 190 to 440 words and loaded only at its stage, the standalone master prompt about 1,700 words. Beyond that: file-based memory, one-line status updates, no echoing of written files, grep or range reads, a script for the gates, a 25-line final report. Per-run token usage has not been benchmarked yet.
 
 ## Honest limits
 
 Grillman improves process and rigour. It does not add capability the underlying model lacks, cannot supply missing data, GPUs or credentials, and cannot guarantee a grade. When something is missing it says so and labels the fallback.
 
+## Responsible use
+
+Grillman is a process, not a license to bypass rules. If an assignment, course or employer restricts AI assistance, follow that rule. For hiring or academic briefs Grillman also produces `docs/VIVA_QA.md` so you can explain every decision in an interview. Submit only work you understand.
+
+## Verification status
+
+Tested: the checker (17 unit tests, including fake evidence, dependency order, cycles, decimal scores, resume), prompt generation, shell syntax, the installer on Linux, secret scanning, the toy example. Not yet verified: behaviour inside each agent (use `evals/evals.json` to test), the Windows installer, the `npx skills` route, CI (template in `docs/ci.yml`), measured token savings. See [`docs/REVIEW_v1.md`](docs/REVIEW_v1.md).
+
 ## Contributing
 
-PRs welcome: new domain playbooks, new review lenses, installers for more agents, more example briefs. Keep every addition load-bearing and short.
+PRs welcome, see [CONTRIBUTING.md](CONTRIBUTING.md). Keep every addition load-bearing and short.
 
 ## License
 

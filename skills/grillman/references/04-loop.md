@@ -2,7 +2,7 @@
 
 ## Node loop (stage 4)
 ```
-pick next TODO node whose deps are DONE
+pick next ready node (`grillman.py next`: TODO and all deps DONE)
 plan in <= 3 lines
 build the smallest thing that can pass Acceptance
 run Acceptance
@@ -25,7 +25,7 @@ run Acceptance
 - If the provided data is tiny, say so and add a clearly labelled extra evaluation set built from legitimate sources.
 
 ## Verify (stage 5)
-1. `python $SK/scripts/grillman.py check` must exit 0.
+1. `python3 $SK/scripts/grillman.py check` must exit 0. It also verifies that file paths named in Evidence really exist and that no node is DONE before its dependencies.
 2. Fresh run: new virtual environment (or clean clone), follow only the README, confirm the outputs match the claimed results.
 3. Time the main path, note memory/GPU needs, put them in the README.
 

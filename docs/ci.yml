@@ -1,0 +1,22 @@
+# Move this file to .github/workflows/ci.yml (GitHub web: open file, pencil icon, edit the file name to
+# ".github/workflows/ci.yml", commit). It is kept here because pushing workflow files needs a token
+# with the "Workflows" permission.
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Shell syntax
+        run: bash -n install.sh && bash -n scripts/make_prompt.sh
+      - name: Toy example passes the gate
+        run: GRILLMAN_DIR=state python3 ../../scripts/grillman.py check
+        working-directory: skills/grillman/examples/toy

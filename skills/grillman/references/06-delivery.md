@@ -10,6 +10,7 @@ Every `[D#]` from SPEC.md gets a file or a section, named so a grader finds it i
 - `samples/`: input next to output, real, from the provided data.
 - Source in a clear structure (`src/`, `tests/`, `scripts/`, `app/`), pinned `requirements.txt` or lockfile, `Dockerfile` if deployment is mentioned, `.gitignore`, LICENSE where appropriate.
 - A short run log or screenshot proving the demo works.
+- Hiring or academic briefs only: `docs/VIVA_QA.md` with the 10 questions an interviewer would most likely ask about the decisions, data, metrics and limits, each with a short honest answer and where to find the evidence. The user must be able to explain every line they submit.
 
 ## First-60-seconds rule
 Whoever opens the repo must see what it does (picture or demo), how to run it, and one headline result, before any scrolling.
